@@ -1,0 +1,16 @@
+Nov 23, 2025 10:58:16 PM com.application.model.VariableInvestorModel calculate
+INFO: VariableInvestor calculation successful: Final balance = 11247.6
+Nov 23, 2025 10:58:40 PM com.application.model.VariableInvestorModel calculate
+INFO: VariableInvestor calculation successful: Final balance = 15409.701300000002
+Nov 23, 2025 10:59:08 PM com.application.model.VariableInvestorModel calculate
+INFO: VariableInvestor calculation successful: Final balance = 7224.5599999999995
+Nov 23, 2025 11:21:05 PM com.application.model.VariableInvestorModel calculate
+INFO: VariableInvestor calculation successful: Final balance = 11247.6
+Nov 23, 2025 11:21:05 PM com.application.model.VariableInvestorModel calculateYearlyBalances
+INFO: Yearly balances computed for 3 years.
+Nov 23, 2025 11:21:33 PM com.application.controller.ReportWindowController exportReport
+INFO: Report exported to C:\Users\creep\Downloads\aoa test report.txt
+Nov 24, 2025 1:16:39 AM com.application.model.VariableInvestorModel calculate
+INFO: VariableInvestor calculation successful: Final balance = 5200.0
+Nov 24, 2025 1:16:39 AM com.application.model.VariableInvestorModel calculateYearlyBalances
+INFO: Yearly balances computed for 3 years.
