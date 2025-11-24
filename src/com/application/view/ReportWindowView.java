@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ReportWindowView extends JFrame {
-
+	private static final long serialVersionUID = 1L;
     public JButton exportButton;
     public JButton closeButton;
     public JTextArea textArea;
@@ -112,7 +112,7 @@ public class ReportWindowView extends JFrame {
      * Inner panel for drawing simple bar chart.
      */
     public static class ChartPanel extends JPanel {
-
+    	private static final long serialVersionUID = 1L;
         private final List<Double> balances;
         private final List<Double> rates;
         private final List<String> labels;
@@ -139,7 +139,7 @@ public class ReportWindowView extends JFrame {
             return categoryColors;
         }
 
-        @Override
+       
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
 
@@ -169,7 +169,7 @@ public class ReportWindowView extends JFrame {
 
             for (int i = 0; i < n; i++) {
                 double value = balances.get(i);
-                double rate = rates.get(i);
+              
                 String label = labels.get(i);
 
                 double normalized = value / max;
@@ -194,5 +194,9 @@ public class ReportWindowView extends JFrame {
                 g2.drawString(valStr, x + (barWidth - valWidth) / 2, y - 3);
             }
         }
+
+		public List<Double> getRates() {
+			return rates;
+		}
     }
 }

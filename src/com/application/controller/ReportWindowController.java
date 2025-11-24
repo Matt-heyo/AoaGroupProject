@@ -90,4 +90,8 @@ public class ReportWindowController {
             JOptionPane.showMessageDialog(view, "Failed to export report: " + e.getMessage());
         }
     }
+
+	public VariableInvestorModel getModel() {
+		return model;
+	}
 }

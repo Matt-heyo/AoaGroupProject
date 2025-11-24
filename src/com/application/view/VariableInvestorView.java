@@ -5,7 +5,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class VariableInvestorView extends JPanel {
-
+	private static final long serialVersionUID = 1L;
     public JTextField principalField;
     public JTextField ratesField;
     public JButton calculateButton;
@@ -134,4 +134,8 @@ public class VariableInvestorView extends JPanel {
 
         return btn;
     }
+
+	public Color getGold() {
+		return gold;
+	}
 }
