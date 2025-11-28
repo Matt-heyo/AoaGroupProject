@@ -1,0 +1,4 @@
+Nov 28, 2025 5:59:43 AM com.application.model.VariableInvestorModel calculate
+INFO: VariableInvestor calculation successful: Final balance = 157500.0
+Nov 28, 2025 5:59:43 AM com.application.model.VariableInvestorModel calculateYearlyBalances
+INFO: Yearly balances computed for 2 years.
