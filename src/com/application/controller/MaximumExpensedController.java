@@ -17,58 +17,91 @@ public class MaximumExpensedController {
         this.view = view;
         this.model = model;
 
-        // Handle calculate button
-        view.calculateButton.addActionListener(e -> calculateEverything());
+        // Add debug message to verify button click
+        view.calculateButton.addActionListener(e -> {
+            System.out.println("Calculate button clicked - Maximum Withdrawal");
+            calculateOptimalWithdrawal();
+        });
 
-        // Handle back button
         view.backButton.addActionListener(e -> listener.onBackToMenu());
     }
 
-    private void calculateEverything() {
+    private void calculateOptimalWithdrawal() {
         try {
-            double balance = Double.parseDouble(view.balanceField.getText());
-            double rate = Double.parseDouble(view.rateField.getText()) / 100.0; // Convert % to decimal
-            int years = Integer.parseInt(view.yearsField.getText());
+            // Get user inputs
+            double balance = Double.parseDouble(view.balanceField.getText().trim());
+            double rate = Double.parseDouble(view.rateField.getText().trim()) / 100.0;
+            int years = Integer.parseInt(view.yearsField.getText().trim());
 
-            double optimalWithdrawal = model.findOptimalWithdrawal(balance, rate, years);
+            // Calculate optimal withdrawal using binary search
+            double optimalWithdrawal = calculateWithBinarySearch(balance, rate, years);
 
-            double finalBalance = model.calculateFinalBalance(balance, optimalWithdrawal, rate, years);
-
-            displayResults(balance, rate, years, optimalWithdrawal, finalBalance);
+            // Display results
+            displayResults(balance, rate, years, optimalWithdrawal);
 
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Please enter valid numbers in all fields.");
+            view.outputArea.setText("Error: Please enter valid numbers in all fields.\n\n" +
+                    "Example:\n" +
+                    "Retirement Fund: 500000\n" +
+                    "Annual Interest Rate: 4\n" +
+                    "Retirement Years: 20");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+            view.outputArea.setText("Error: " + ex.getMessage());
         }
     }
 
-    private void displayResults(double balance, double rate, int years,
-                                double withdrawal, double finalBalance) {
+    private double calculateWithBinarySearch(double balance, double rate, int targetYears) {
+        double low = 0;
+        double high = balance;
+        double bestWithdrawal = 0;
 
+        // Binary search for optimal withdrawal
+        for (int i = 0; i < 50; i++) {
+            double mid = (low + high) / 2;
+            int yearsLasts = simulateRetirement(balance, mid, rate);
+
+            if (yearsLasts >= targetYears) {
+                bestWithdrawal = mid;
+                low = mid; // Try higher withdrawal
+            } else {
+                high = mid; // Try lower withdrawal
+            }
+        }
+
+        return bestWithdrawal;
+    }
+
+    private int simulateRetirement(double balance, double withdrawal, double rate) {
+        double currentBalance = balance;
+        int years = 0;
+
+        while (currentBalance > 0 && years < 100) {
+            currentBalance = (currentBalance - withdrawal) * (1 + rate);
+            years++;
+        }
+
+        return years;
+    }
+
+    private void displayResults(double balance, double rate, int years, double withdrawal) {
         StringBuilder result = new StringBuilder();
-        result.append("=== RETIREMENT PLANNING RESULTS ===\n\n");
+        result.append("=== MAXIMUM WITHDRAWAL CALCULATION ===\n\n");
 
-        result.append("YOUR INPUTS:\n");
-        result.append("• Retirement Fund: $").append(String.format("%,.2f", balance)).append("\n");
-        result.append("• Annual Interest Rate: ").append(String.format("%.1f%%", rate * 100)).append("\n");
-        result.append("• Retirement Period: ").append(years).append(" years\n\n");
+        result.append("INPUT VALUES:\n");
+        result.append("Retirement Fund: $").append(String.format("%,.2f", balance)).append("\n");
+        result.append("Annual Interest Rate: ").append(String.format("%.1f%%", rate * 100)).append("\n");
+        result.append("Retirement Period: ").append(years).append(" years\n\n");
 
-        result.append("OPTIMAL WITHDRAWAL STRATEGY:\n");
-        result.append("• Maximum Annual Withdrawal: $").append(String.format("%,.2f", withdrawal)).append("\n");
-        result.append("• Monthly Equivalent: $").append(String.format("%,.2f", withdrawal / 12)).append("\n\n");
+        result.append("OPTIMAL WITHDRAWAL AMOUNTS:\n");
+        result.append("Annual: $").append(String.format("%,.2f", withdrawal)).append("\n");
+        result.append("Monthly: $").append(String.format("%,.2f", withdrawal / 12)).append("\n");
+        result.append("Weekly: $").append(String.format("%,.2f", withdrawal / 52)).append("\n\n");
 
-        result.append("PROJECTION:\n");
-        result.append("• Starting Balance: $").append(String.format("%,.2f", balance)).append("\n");
-        result.append("• Annual Withdrawal: $").append(String.format("%,.2f", withdrawal)).append("\n");
-        result.append("• Annual Interest Earned: ").append(String.format("%.1f%%", rate * 100)).append("\n");
-        result.append("• Final Balance after ").append(years).append(" years: $").append(String.format("%,.2f", finalBalance)).append("\n\n");
+        result.append("CALCULATION METHOD:\n");
+        result.append("Binary Search Algorithm\n");
+        result.append("Finds maximum sustainable withdrawal\n");
+        result.append("Funds should last exactly ").append(years).append(" years");
 
-        result.append("METHOD USED:\n");
-        result.append("• Binary Search (Successive Approximation)\n");
-        result.append("• Finds the perfect withdrawal amount\n");
-        result.append("• Ensures funds last exactly ").append(years).append(" years\n");
-
-        view.resultArea.setText(result.toString());
+        view.outputArea.setText(result.toString());
     }
 }
