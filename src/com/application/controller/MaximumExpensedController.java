@@ -55,16 +55,16 @@ public class MaximumExpensedController {
         double high = balance;
         double bestWithdrawal = 0;
 
-        // Binary search for optimal withdrawal
+        // Binary search for optimal withdrawal amount
         for (int i = 0; i < 50; i++) {
             double mid = (low + high) / 2;
             int yearsLasts = simulateRetirement(balance, mid, rate);
 
             if (yearsLasts >= targetYears) {
                 bestWithdrawal = mid;
-                low = mid; // Try higher withdrawal
+                low = mid; // Try inputting a higher withdrawal amount
             } else {
-                high = mid; // Try lower withdrawal
+                high = mid; // Try inputting a lower withdrawal amount
             }
         }
 
@@ -85,22 +85,17 @@ public class MaximumExpensedController {
 
     private void displayResults(double balance, double rate, int years, double withdrawal) {
         StringBuilder result = new StringBuilder();
-        result.append("=== MAXIMUM WITHDRAWAL CALCULATION ===\n\n");
+        result.append("");
 
-        result.append("INPUT VALUES:\n");
-        result.append("Retirement Fund: $").append(String.format("%,.2f", balance)).append("\n");
-        result.append("Annual Interest Rate: ").append(String.format("%.1f%%", rate * 100)).append("\n");
-        result.append("Retirement Period: ").append(years).append(" years\n\n");
+        result.append("Current retirement fund: $").append(String.format("%,.2f", balance)).append("\n");
+        result.append("At an annual interest rate of: ").append(String.format("%.1f%%", rate * 100)).append("\n");
+        result.append("This covers a period of: ").append(years).append(" years\n\n");
 
-        result.append("OPTIMAL WITHDRAWAL AMOUNTS:\n");
-        result.append("Annual: $").append(String.format("%,.2f", withdrawal)).append("\n");
-        result.append("Monthly: $").append(String.format("%,.2f", withdrawal / 12)).append("\n");
-        result.append("Weekly: $").append(String.format("%,.2f", withdrawal / 52)).append("\n\n");
+        result.append("Using the binary search algorithm the optimal amount for:\n");
+        result.append("Annual withdrawal: $").append(String.format("%,.2f", withdrawal)).append("\n");
+        result.append("Monthly withdrawal: $").append(String.format("%,.2f", withdrawal / 12)).append("\n");
+        result.append("Weekly withdrawal: $").append(String.format("%,.2f", withdrawal / 52)).append("\n\n");
 
-        result.append("CALCULATION METHOD:\n");
-        result.append("Binary Search Algorithm\n");
-        result.append("Finds maximum sustainable withdrawal\n");
-        result.append("Funds should last exactly ").append(years).append(" years");
 
         view.outputArea.setText(result.toString());
     }

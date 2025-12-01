@@ -22,40 +22,34 @@ public class MaximumExpensedView extends JPanel {
         setBackground(lightBackground);
         setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // --------------------------------------
-        // Title
-        // --------------------------------------
         JLabel title = new JLabel("Maximum Withdrawal Calculator", SwingConstants.CENTER);
         title.setFont(new Font("Serif", Font.BOLD, 22));
         title.setForeground(navyBlue);
         add(title, BorderLayout.NORTH);
 
-        // --------------------------------------
-        // Input Panel (Card-style)
-        // --------------------------------------
+
         JPanel cardPanel = new JPanel();
         cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
         cardPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         cardPanel.setBackground(Color.WHITE);
         cardPanel.setOpaque(true);
 
-        // Retirement Fund Row
+
         JLabel balanceLabel = new JLabel("Retirement Fund:");
         balanceLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
         balanceField = createInputField();
 
-        // Interest Rate Row
         JLabel rateLabel = new JLabel("Annual Interest Rate (%):");
         rateLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
         rateField = createInputField();
 
-        // Retirement Years Row
+
         JLabel yearsLabel = new JLabel("Retirement Years:");
         yearsLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
         yearsField = createInputField();
-        yearsField.setText("20"); // Default value
+        yearsField.setText("30"); // Default value
 
-        // Buttons Panel
+
         calculateButton = createStyledButton("Calculate");
         backButton = createStyledButton("Back to Menu");
 
@@ -65,7 +59,7 @@ public class MaximumExpensedView extends JPanel {
         buttonContainer.add(calculateButton);
         buttonContainer.add(backButton);
 
-        // Add components to card panel
+
         cardPanel.add(balanceLabel);
         cardPanel.add(balanceField);
         cardPanel.add(Box.createVerticalStrut(10));
@@ -82,9 +76,7 @@ public class MaximumExpensedView extends JPanel {
 
         add(cardPanel, BorderLayout.CENTER);
 
-        // --------------------------------------
-        // Output Panel
-        // --------------------------------------
+
         outputArea = new JTextArea(8, 40);
         outputArea.setEditable(false);
         outputArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
