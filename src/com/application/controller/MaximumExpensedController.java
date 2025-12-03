@@ -17,85 +17,102 @@ public class MaximumExpensedController {
         this.view = view;
         this.model = model;
 
-        // Add debug message to verify button click
-        view.calculateButton.addActionListener(e -> {
-            System.out.println("Calculate button clicked - Maximum Withdrawal");
-            calculateOptimalWithdrawal();
-        });
-
+        view.calculateButton.addActionListener(e -> calculateOptimalWithdrawal());
         view.backButton.addActionListener(e -> listener.onBackToMenu());
     }
 
     private void calculateOptimalWithdrawal() {
         try {
-            // Get user inputs
-            double balance = Double.parseDouble(view.balanceField.getText().trim());
-            double rate = Double.parseDouble(view.rateField.getText().trim()) / 100.0;
-            int years = Integer.parseInt(view.yearsField.getText().trim());
+            String balanceText = view.balanceField.getText().trim();
+            String rateText = view.rateField.getText().trim();
+            String yearsText = view.yearsField.getText().trim();
 
-            // Calculate optimal withdrawal using binary search
-            double optimalWithdrawal = calculateWithBinarySearch(balance, rate, years);
+            if (balanceText.isEmpty() || rateText.isEmpty() || yearsText.isEmpty()) {
+                view.outputArea.setText("ERROR: All fields are required!\n\n" +
+                        "Please enter:\n" +
+                        "1. Retirement Fund (e.g., 500000)\n" +
+                        "2. Annual Interest Rate (e.g., 4.5)\n" +
+                        "3. Retirement Years (e.g., 20)");
+                return;
+            }
 
-            // Display results
+
+            double balance = Double.parseDouble(balanceText);
+            double rate = Double.parseDouble(rateText) / 100.0;
+            int years = Integer.parseInt(yearsText);
+
+            if (balance < 0) {
+                view.outputArea.setText("ERROR: Negative values not accepted for Retirement Fund!\n\n" +
+                        "Please enter a positive amount.\n" +
+                        "Example: 500000\n\n" +
+                        "Note: Minimum required is $500,000");
+                return;
+            }
+
+            if (rate < 0) {
+                view.outputArea.setText("ERROR: Negative values not accepted for Interest Rate!\n\n" +
+                        "Please enter a positive percentage.\n" +
+                        "Example: 4.5 for 4.5%");
+                return;
+            }
+
+            if (years < 0) {
+                view.outputArea.setText("ERROR: Negative values not accepted for Retirement Years!\n\n" +
+                        "Please enter a positive number of years.\n" +
+                        "Example: 20\n\n" +
+                        "Note: Minimum required is 10 years");
+                return;
+            }
+
+            if (years < 10) {
+                view.outputArea.setText("ERROR: Retirement Years must be at least 10 years!\n\n" +
+                        "You entered: " + years + " years\n" +
+                        "Minimum required: 10 years\n\n" +
+                        "Please enter 10 or more years.");
+                return;
+            }
+
+            if (balance < 500000) {
+                view.outputArea.setText("ERROR: Retirement Fund must be at least $500,000!\n\n" +
+                        "You entered: $" + String.format("%,.2f", balance) + "\n" +
+                        "Minimum required: $500,000\n\n" +
+                        "Please enter $500,000 or more.");
+                return;
+            }
+
+
+            double optimalWithdrawal = model.findOptimalWithdrawal(balance, rate, years);
             displayResults(balance, rate, years, optimalWithdrawal);
 
         } catch (NumberFormatException ex) {
-            view.outputArea.setText("Error: Please enter valid numbers in all fields.\n\n" +
-                    "Example:\n" +
-                    "Retirement Fund: 500000\n" +
-                    "Annual Interest Rate: 4\n" +
-                    "Retirement Years: 20");
+            view.outputArea.setText("ERROR: Invalid input detected!\n\n" +
+                    "Please enter valid numbers in all fields.\n\n" +
+                    "Examples:\n" +
+                    "Retirement Fund: 500000 (no commas, no symbols)\n" +
+                    "Annual Interest Rate: 4.5 (just the number, no % sign)\n" +
+                    "Retirement Years: 20 (whole number only)\n\n" +
+                    "Do NOT use:\n" +
+                    "Letters: abc, xyz\n" +
+                    "Symbols: $, %, @\n" +
+                    "Special characters: commas, spaces");
         } catch (Exception ex) {
-            view.outputArea.setText("Error: " + ex.getMessage());
+            view.outputArea.setText("ERROR: " + ex.getMessage());
         }
-    }
-
-    private double calculateWithBinarySearch(double balance, double rate, int targetYears) {
-        double low = 0;
-        double high = balance;
-        double bestWithdrawal = 0;
-
-        // Binary search for optimal withdrawal amount
-        for (int i = 0; i < 50; i++) {
-            double mid = (low + high) / 2;
-            int yearsLasts = simulateRetirement(balance, mid, rate);
-
-            if (yearsLasts >= targetYears) {
-                bestWithdrawal = mid;
-                low = mid; // Try inputting a higher withdrawal amount
-            } else {
-                high = mid; // Try inputting a lower withdrawal amount
-            }
-        }
-
-        return bestWithdrawal;
-    }
-
-    private int simulateRetirement(double balance, double withdrawal, double rate) {
-        double currentBalance = balance;
-        int years = 0;
-
-        while (currentBalance > 0 && years < 100) {
-            currentBalance = (currentBalance - withdrawal) * (1 + rate);
-            years++;
-        }
-
-        return years;
     }
 
     private void displayResults(double balance, double rate, int years, double withdrawal) {
         StringBuilder result = new StringBuilder();
-        result.append("");
 
+        result.append("YOUR RETIREMENT PLAN:\n");
         result.append("Current retirement fund: $").append(String.format("%,.2f", balance)).append("\n");
-        result.append("At an annual interest rate of: ").append(String.format("%.1f%%", rate * 100)).append("\n");
-        result.append("This covers a period of: ").append(years).append(" years\n\n");
+        result.append("Annual interest rate: ").append(String.format("%.1f%%", rate * 100)).append("\n");
+        result.append("Retirement period: ").append(years).append(" years\n\n");
 
-        result.append("Using the binary search algorithm the optimal amount for:\n");
-        result.append("Annual withdrawal: $").append(String.format("%,.2f", withdrawal)).append("\n");
-        result.append("Monthly withdrawal: $").append(String.format("%,.2f", withdrawal / 12)).append("\n");
-        result.append("Weekly withdrawal: $").append(String.format("%,.2f", withdrawal / 52)).append("\n\n");
-
+        result.append("OPTIMAL WITHDRAWAL AMOUNTS:\n");
+        result.append("Annual withdrawal amount: $").append(String.format("%,.2f", withdrawal)).append("\n");
+        result.append("Monthly withdrawal amount: $").append(String.format("%,.2f", withdrawal / 12)).append("\n");
+        result.append("Weekly withdrawal amount: $").append(String.format("%,.2f", withdrawal / 52)).append("\n");
+        result.append("Daily withdrawal amount: $").append(String.format("%,.2f", withdrawal / 365)).append("\n\n");
 
         view.outputArea.setText(result.toString());
     }

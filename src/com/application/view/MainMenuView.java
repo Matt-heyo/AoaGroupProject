@@ -47,7 +47,7 @@ public class MainMenuView extends JPanel {
         fixedBtn = createStyledButton("Fixed Growth Simulation");
         variableBtn = createStyledButton("Variable Growth Simulation");
         retiredBtn = createStyledButton("Retirement Duration Simulation");
-        maxExpenseBtn = createStyledButton("Maximum Withdrawal (Binary Search)");
+        maxExpenseBtn = createStyledButton("Maximum Withdrawal");
 
        
         cardPanel.add(menuLabel);

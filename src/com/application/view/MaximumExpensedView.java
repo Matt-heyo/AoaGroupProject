@@ -22,6 +22,7 @@ public class MaximumExpensedView extends JPanel {
         setBackground(lightBackground);
         setBorder(new EmptyBorder(20, 20, 20, 20));
 
+
         JLabel title = new JLabel("Maximum Withdrawal Calculator", SwingConstants.CENTER);
         title.setFont(new Font("Serif", Font.BOLD, 22));
         title.setForeground(navyBlue);
@@ -38,16 +39,20 @@ public class MaximumExpensedView extends JPanel {
         JLabel balanceLabel = new JLabel("Retirement Fund:");
         balanceLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
         balanceField = createInputField();
+        balanceField.setToolTipText("Minimum: $500,000 | No negative values allowed");
+
 
         JLabel rateLabel = new JLabel("Annual Interest Rate (%):");
         rateLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
         rateField = createInputField();
+        rateField.setToolTipText("Example: 4.5 for 4.5% | No negative values allowed");
 
 
         JLabel yearsLabel = new JLabel("Retirement Years:");
         yearsLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
         yearsField = createInputField();
         yearsField.setText("30"); // Default value
+        yearsField.setToolTipText("Minimum: 10 years | No negative values allowed");
 
 
         calculateButton = createStyledButton("Calculate");
