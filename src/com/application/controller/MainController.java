@@ -1,7 +1,9 @@
 package com.application.controller;
 
+import com.application.model.FixedInvestor;
 import com.application.model.MaximumExpensedModel;
 import com.application.model.VariableInvestorModel;
+import com.application.view.FixedInvestorView;
 import com.application.view.MainMenuView;
 import com.application.view.MaximumExpensedView;
 import com.application.view.VariableInvestorView;
@@ -21,12 +23,12 @@ public class MainController {
 
         cards = new JPanel(new CardLayout());
 
-        // Views
+        
         MainMenuView menuView = new MainMenuView();
         VariableInvestorView variableView = new VariableInvestorView();
         MaximumExpensedView maxExpenseView = new MaximumExpensedView();
-
-        // Controllers
+        FixedInvestorView fixedView = new FixedInvestorView();
+        
         new VariableInvestorController(
                 variableView,
                 new VariableInvestorModel(),
@@ -38,16 +40,21 @@ public class MainController {
                 new MaximumExpensedModel(),
                 () -> showCard("menu")
         );
+        new FixedInvestorController(
+                fixedView,
+                new FixedInvestor(),
+                () -> showCard("menu")
+        );
 
-        // Add views to cards
+      ]
         cards.add(menuView, "menu");
         cards.add(variableView, "variable");
         cards.add(maxExpenseView, "maxExpense");
-
-        // Menu listeners
+		cards.add(fixedView, "fixed");
+      
         menuView.variableBtn.addActionListener(e -> showCard("variable"));
         menuView.maxExpenseBtn.addActionListener(e -> showCard("maxExpense"));
-
+        menuView.fixedBtn.addActionListener(e -> showCard("fixed"));
         frame.add(cards);
         frame.setVisible(true);
 
