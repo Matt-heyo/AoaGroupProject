@@ -1,8 +1,10 @@
 package com.application.controller;
 
+import com.application.model.FinallyRetiredModel;
 import com.application.model.FixedInvestor;
 import com.application.model.MaximumExpensedModel;
 import com.application.model.VariableInvestorModel;
+import com.application.view.FinallyRetiredView;
 import com.application.view.FixedInvestorView;
 import com.application.view.MainMenuView;
 import com.application.view.MaximumExpensedView;
@@ -28,7 +30,8 @@ public class MainController {
         VariableInvestorView variableView = new VariableInvestorView();
         MaximumExpensedView maxExpenseView = new MaximumExpensedView();
         FixedInvestorView fixedView = new FixedInvestorView();
-        
+        FinallyRetiredView retiredView = new FinallyRetiredView();
+
         new VariableInvestorController(
                 variableView,
                 new VariableInvestorModel(),
@@ -45,16 +48,23 @@ public class MainController {
                 new FixedInvestor(),
                 () -> showCard("menu")
         );
-
-      ]
+        new FinallyRetiredController(
+                retiredView,
+                new FinallyRetiredModel(),
+                () -> showCard("menu")
+        );
+      
         cards.add(menuView, "menu");
         cards.add(variableView, "variable");
         cards.add(maxExpenseView, "maxExpense");
 		cards.add(fixedView, "fixed");
-      
+		cards.add(retiredView, "retired");
+
         menuView.variableBtn.addActionListener(e -> showCard("variable"));
         menuView.maxExpenseBtn.addActionListener(e -> showCard("maxExpense"));
         menuView.fixedBtn.addActionListener(e -> showCard("fixed"));
+        menuView.retiredBtn.addActionListener(e -> showCard("retired"));
+
         frame.add(cards);
         frame.setVisible(true);
 

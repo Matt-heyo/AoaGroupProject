@@ -14,3 +14,9 @@ Nov 24, 2025 1:16:39 AM com.application.model.VariableInvestorModel calculate
 INFO: VariableInvestor calculation successful: Final balance = 5200.0
 Nov 24, 2025 1:16:39 AM com.application.model.VariableInvestorModel calculateYearlyBalances
 INFO: Yearly balances computed for 3 years.
+Dec 03, 2025 11:00:55 PM com.application.model.FinallyRetiredModel calculate
+INFO: finallyRetired(): Funds lasted 1 years.
+Dec 03, 2025 11:01:50 PM com.application.model.FinallyRetiredModel calculate
+INFO: finallyRetired(): Funds lasted 3 years.
+Dec 03, 2025 11:01:52 PM com.application.model.FinallyRetiredModel calculate
+INFO: finallyRetired(): Funds lasted 3 years.
