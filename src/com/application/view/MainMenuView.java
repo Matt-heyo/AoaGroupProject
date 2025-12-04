@@ -1,8 +1,8 @@
 package com.application.view;
 
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
 
 public class MainMenuView extends JPanel {
 
@@ -97,7 +97,7 @@ public class MainMenuView extends JPanel {
 
 
 
-	public Color getGold() {
-		return gold;
-	}
+    public Color getGold() {
+        return gold;
+    }
 }

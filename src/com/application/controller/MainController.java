@@ -1,11 +1,12 @@
 package com.application.controller;
 
-import com.application.model.VariableInvestorModel;
+import com.application.model.FinallyRetiredModel;
+import com.application.model.VariableInvestorModel;          // NEW
+import com.application.view.FinallyRetiredView;
 import com.application.view.MainMenuView;
-import com.application.view.VariableInvestorView;
-
-import javax.swing.*;
+import com.application.view.VariableInvestorView;            // NEW
 import java.awt.*;
+import javax.swing.*;
 
 public class MainController {
 
@@ -15,28 +16,62 @@ public class MainController {
     public MainController() {
         frame = new JFrame("AOA Retirement Optimizer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 500);
+        frame.setSize(900, 600);
+        frame.setLocationRelativeTo(null);
 
+        // Card container
         cards = new JPanel(new CardLayout());
 
-        // Views
+        // -----------------------------------------
+        // VIEWS
+        // -----------------------------------------
         MainMenuView menuView = new MainMenuView();
         VariableInvestorView variableView = new VariableInvestorView();
+        FinallyRetiredView finallyRetiredView = new FinallyRetiredView();     
 
-        // Controllers
+        // -----------------------------------------
+        // MODELS
+        // -----------------------------------------
+        VariableInvestorModel variableModel = new VariableInvestorModel();
+        FinallyRetiredModel finallyRetiredModel = new FinallyRetiredModel(); 
+
+        // -----------------------------------------
+        // CONTROLLERS
+        // -----------------------------------------
+        // Variable Investor
         new VariableInvestorController(
                 variableView,
-                new VariableInvestorModel(),
+                variableModel,
                 () -> showCard("menu")
         );
 
-        // Add views to cards
+        // Finally Retired  
+       new FinallyRetiredController(
+        finallyRetiredView,
+        finallyRetiredModel,
+        variableModel,          // so it can reuse market classifications + report window
+        () -> showCard("menu")
+);
+
+        // -----------------------------------------
+        // ADD CARDS
+        // -----------------------------------------
         cards.add(menuView, "menu");
         cards.add(variableView, "variable");
-
-        // Menu listeners
+        cards.add(finallyRetiredView, "finallyRetired");  
+        // -----------------------------------------
+        // MENU BUTTON LISTENERS
+        // -----------------------------------------
+        // Existing: goes to Variable Investor screen
         menuView.variableBtn.addActionListener(e -> showCard("variable"));
 
+        // NEW: goes to Finally Retired screen
+        menuView.retiredBtn.addActionListener(e -> showCard("finallyRetired"));
+
+
+        // -----------------------------------------
+        // FINAL FRAME SETUP
+        // -----------------------------------------
         frame.add(cards);
         frame.setVisible(true);
 
